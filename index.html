@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -279,7 +278,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -341,6 +339,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -396,7 +395,7 @@ We present the <code>ari</code> package for automatically generating technology-
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Videos are a crucial way people learn and they are pervasive in online education platforms <span class="citation">(Hsin and Cigas 2013; Hartsell and Yuen 2006)</span>. Producing educational videos with a lecturer speaking over slides takes time, energy, and usually video editing skills. Maintaining the accuracy and relevancy of lecture videos focused on technical subjects like computing programming or data science can often require remaking an entire video, requiring extensive editing and splicing of new segments. We present , the <strong>A</strong>utomated <strong>R</strong> <strong>I</strong>nstructor as a tool to address these issues by creating reproducible presentations and videos that can be automatically generated from plain text files or similar artifacts. By using , we provide a tool for users to rapidly create and update video content.</p>
-<p>In its simplest form a lecture video is comprised of visual content (e.g. slides and figures) and a spoken explanation of the visual content. Instead of a human lecturer, the  package uses a text-to-speech system to synthesize spoken audio for a lecture. Modern text-to-speech systems that take advantage of recent advancements in artificial intelligence research are available from <a href="https://cloud.google.com/text-to-speech/">Google</a>, <a href="https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/">Microsoft</a>, and <a href="https://aws.amazon.com/polly/">Amazon</a>. Many of these synthesizers make use of deep learning methods, such as WaveNet <span class="citation">(Van Den Oord et al. 2016)</span> and have interfaces in R <span class="citation">(Edmondson 2019; Muschelli 2019a; Leeper 2017)</span>. Currently in , synthesis of the the audio can be rendered using any of these services through the  package <span class="citation">(Muschelli 2019b)</span>. The default is <a href="https://aws.amazon.com/polly/">Amazon Polly</a>, which has text-to-speech voice generation in over 21 languages, including a total of 29 dialects, implemented in the  package <span class="citation">(Leeper 2017)</span>. In addition to multiple languages, the speech generation services provide voices with several pitches representing different genders within the same language. We present the  package with reproducible use case examples and the video outputs with different voices in multiple languages.</p>
+<p>In its simplest form a lecture video is comprised of visual content (e.g. slides and figures) and a spoken explanation of the visual content. Instead of a human lecturer, the  package uses a text-to-speech system to synthesize spoken audio for a lecture. Modern text-to-speech systems that take advantage of recent advancements in artificial intelligence research are available from <a href="https://cloud.google.com/text-to-speech/">Google</a>, <a href="https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/">Microsoft</a>, and <a href="https://aws.amazon.com/polly/">Amazon</a>. Many of these synthesizers make use of deep learning methods, such as WaveNet <span class="citation">(Van Den Oord et al. 2016)</span> and have interfaces in R <span class="citation">(Edmondson 2019; Muschelli 2019a; Leeper 2017)</span>. Currently in , synthesis of the the audio can be rendered using any of these services through the  package <span class="citation">(Muschelli 2019b)</span>. The default is <a href="https://aws.amazon.com/polly/">Amazon Polly</a>, which has text-to-speech voice generation in over twenty one languages, implemented in the  package <span class="citation">(Leeper 2017)</span>. In addition to multiple languages, the speech generation services provide voices with several pitches representing different genders within the same language. We present the  package with reproducible use case examples and the video outputs with different voices in multiple languages.</p>
 <p>The  package relies on the  package for splitting and combining audio files appropriately so that lecture narration is synced with each slide <span class="citation">(Ligges et al. 2018)</span>. Once the audio is generated, it is synced with images to make a lecture video. Multiple open source tools for video editing and splicing exist;  takes advantage of the <code>ffmpeg</code> (<a href="http://www.ffmpeg.org/" class="uri">http://www.ffmpeg.org/</a>) software, a command-line interface to the <code>libav</code> library. These powerful tools have been thoroughly tested with a development history spanning almost 20 years.  has been built with presets for <code>ffmpeg</code> which allow output videos to be compatible with multiple platforms, including the YouTube and Coursera players. These presets include specifying the bitrate, audio and video codecs, and the output video format. The numerous additional video specifications for customization can be applied to command-line arguments <code>ffmpeg</code> through .</p>
 <p>We have developed a workflow with  as the centerpiece for automatically generating educational videos. The narration script for lecture videos is stored in a plain text format, so that it can be synthesized into audio files via text-to-speech services. By storing lecture narration in plain text it can be updated, tracked, and collaboratively or automatically updated with version control software like Git and GitHub. If the figures in the lecture slides are created in a reproducible framework, such as generated using R code, the entire video can be reproducibly created and automatically updated. Thus,  is the Automated R Instructor. We will provide examples of creating videos based on the following sets of source files: a slide deck built with R Markdown, a set of images and a script, or a Google Slide deck or PowerPoint presentation.<br />
 The overview of the processes demonstrated in this paper are seen in Figure . We will also demonstrate the , which contains helper functions extensions of .</p>
@@ -433,13 +432,13 @@ isTRUE(result)</code></pre>
 <h2>Creating Speech from Text: <code>ari_spin</code></h2>
 <p>After Polly has been authenticated, videos can be created using the <code>ari_spin</code> function with an ordered set of images and a corresponding ordered set of text strings. This text is the “script” that is spoken over the images to create the output video. The number of elements in the text needs to be equal to the number of images. Let us take a part of Mercutio’s speech from Shakespeare’s Romeo and Juliet <span class="citation">(Shakespeare 2003)</span> and overlay it on two images from the Wikipedia page about Mercutio (<a href="https://en.wikipedia.org/wiki/Mercutio" class="uri">https://en.wikipedia.org/wiki/Mercutio</a>):</p>
 <pre class="r"><code>speech =  c(
-  &quot;I will now perform part of Mercutio&#39;s speech from Shakespeare&#39;s Romeo and Juliet.&quot;, 
+  &quot;I will now perform part of Mercutio's speech from Shakespeare's Romeo and Juliet.&quot;, 
   &quot;O, then, I see Queen Mab hath been with you.
-   She is the fairies&#39; midwife, and she comes
+   She is the fairies' midwife, and she comes
    In shape no bigger than an agate-stone
    On the fore-finger of an alderman,
    Drawn with a team of little atomies
-   Athwart men&#39;s noses as they lies asleep;&quot;)
+   Athwart men's noses as they lies asleep;&quot;)
 mercutio_file = &quot;death_of_mercutio.png&quot;
 mercutio_file2 = &quot;mercutio_actor.png&quot;</code></pre>
 <pre class="r"><code>shakespeare_result = ari_spin(
@@ -500,16 +499,21 @@ For example, I’m in a coffee shop and it may be loud.&quot;
 -variables and a smoother between them.&quot;</code></pre>
 <p>The  package also can combine these processes and take multiple input types (Google Slides, PDFs, PPTX) and harmonize the output. The <code>pptx_to_ari</code> function combines the above steps:</p>
 <pre class="r"><code>doc = ariExtra::pptx_to_ari(pptx)</code></pre>
-<pre><code>Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpDXudKg/filede345269ba53.png... done!
-Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpDXudKg/filede341b47c96a.png... done!</code></pre>
+<pre><code>Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+/Rtmpo6aD9u/filede6236136195.png... done!
+Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+/Rtmpo6aD9u/filede62326b98ef.png... done!</code></pre>
 <pre class="r"><code>doc[c(&quot;images&quot;, &quot;script&quot;)]</code></pre>
 <pre><code>$images
-[1] &quot;/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpDXudKg/filede345f85c24_files/slide_1.png&quot;
-[2] &quot;/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpDXudKg/filede345f85c24_files/slide_2.png&quot;
-
+[1] &quot;/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+Rtmpo6aD9u/filede6236058cc5_files/slide_1.png&quot;
+[2] &quot;/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+Rtmpo6aD9u/filede6236058cc5_files/slide_2.png&quot;
 $script
-[1] &quot;Sometimes it’s hard for an instructor to take the time to record their lectures.  For example, I’m in a coffee shop and it may be loud.&quot;
-[2] &quot;Here is an example of a plot with really small axes.  We plot the x versus the y-variables and a smoother between them.&quot;                </code></pre>
+[1] &quot;Sometimes it’s hard for an instructor to take the time to record their lectures. 
+For example, I’m in a coffee shop and it may be loud.&quot;
+[2] &quot;Here is an example of a plot with really small axes. We plot the x versus the 
+y-variables and a smoother between them.&quot;</code></pre>
 <p>which can be passed to <code>ari_spin</code>.</p>
 <p>We can then render the video with the “Kimberly” voice. We use the <code>divisible_height</code> argument to forcibly scale the height of the images to be divisible by 2 if necessary. This is required by the <code>x264</code> (default) codec which we have specified as a preset:</p>
 <pre class="r"><code>pptx_result = ari_spin(pngs, notes, output = &quot;pptx.mp4&quot;, voice = &quot;Kimberly&quot;,
@@ -524,8 +528,8 @@ isTRUE(pptx_result)</code></pre>
 [6] &quot;take the time to record their lectures.&quot; </code></pre>
 <p>For Google Slides, the slide deck can be downloaded as a PowerPoint and the previous steps can be used, however it can also be downloaded directly as a PDF. We will use the same presentation, but uploaded to Google Slides. The  package has the function <code>gs_to_ari</code> to wrap this functionality (as long as link sharing is turned on), where we can pass the Google identifier:</p>
 <pre class="r"><code>gs_doc = ariExtra::gs_to_ari(&quot;14gd2DiOCVKRNpFfLrryrGG7D3S8pu9aZ&quot;)</code></pre>
-<pre><code>Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpDXudKg/filede343b24ef07.png... done!
-Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpDXudKg/filede3475c8d2e6.png... done!</code></pre>
+<pre><code>Converting page 1 to /tmp/Rtmp2FH2XI/file222533f7a8ff.png... done!
+Converting page 2 to /tmp/Rtmp2FH2XI/file22255a5a0ab0.png... done!</code></pre>
 <p>Note, as Google provides a PDF version of the slides, this obviates the LibreOffice dependency.</p>
 <p>Alternatively, the notes can be extracted using  and for Google Slides via the API, but requires authentication, so we will omit it here. Thus, we should be able to create videos using R Markdown, Google Slides, or PowerPoint presentations in an automatic fashion.</p>
 </div>
@@ -543,6 +547,9 @@ Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpDXudK
 <p>Although we rely on Amazon Polly for voice synthesis, other packages provide voice synthesis, such as  for Microsoft and  for Google. We created the  package to harmonize these synthesis options for . Thus, switching from one voice generation service to another simply involves switching the <code>service</code> and <code>voice</code> arguments in , assuming the service is properly authenticated. This ease of switching allows researchers to compare and test which voices and services are most effective at delivering content.</p>
 <p>We see significant potential in how  could expand global learning opportunities. Video narration scripts can be automatically translated into other languages with services like the <a href="https://cloud.google.com/translate/docs/">Google Translation API</a>, where  provides an interface. Amazon Polly can speak languages other than English, meaning that one can write a lecture once and generate lecture videos in multiple languages. Therefore this workflow can greatly expand the potential audience for educational videos with relatively little additional effort from lecture creators. We plan to flesh out these workflows so that video creators can manage videos in multiple languages. We hope to add functionality so that communities of learners with language expertise can easily suggest modifications to automatically translated videos, and tooling so suggestions can be incorporated quickly.</p>
 <p>The workflow we have specified requires many interlocking pieces of software, therefore we have created a Docker environment (<a href="https://github.com/seankross/bologna" class="uri">https://github.com/seankross/bologna</a>) which contains the required packages to create videos using . This Docker image ensures that our workflow is completely reproducible, and it also enables deployment to multiple disk images for creating lecture videos at scale.</p>
+</div>
+<div id="bibliography" class="section level2">
+<h2>Bibliography</h2>
 
 <!-- Note to Self/John: Come to think of it Ari is missing a feature, which is the ability to insert a video into a lecture! -->
 <div id="refs" class="references">
@@ -565,10 +572,10 @@ Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpDXudK
 <p>Gohel, David. 2019. <em>officer: Manipulation of Microsoft Word and PowerPoint Documents</em>. <a href="https://CRAN.R-project.org/package=officer">https://CRAN.R-project.org/package=officer</a>.</p>
 </div>
 <div id="ref-hartsell2006video">
-<p>Hartsell, Taralynn, and Steve Chi-Yin Yuen. 2006. “Video Streaming in Online Learning.” <em>AACE Journal</em> 14 (1): 31–43.</p>
+<p>Hartsell, Taralynn, and Steve Chi-Yin Yuen. 2006. “Video Streaming in Online Learning.” <em>AACE Journal</em> 14 (1). Association for the Advancement of Computing in Education (AACE): 31–43.</p>
 </div>
 <div id="ref-hsin2013short">
-<p>Hsin, Wen-Jung, and John Cigas. 2013. “Short Videos Improve Student Learning in Online Education.” <em>Journal of Computing Sciences in Colleges</em> 28 (5): 253–59.</p>
+<p>Hsin, Wen-Jung, and John Cigas. 2013. “Short Videos Improve Student Learning in Online Education.” <em>Journal of Computing Sciences in Colleges</em> 28 (5). Consortium for Computing Sciences in Colleges: 253–59.</p>
 </div>
 <div id="ref-Kross-2019">
 <p>Kross, Sean, and Philip J. Guo. 2019. “End-User Programmers Repurposing End-User Programming Tools to Foster Diversity in Adult End-User Programming Education.” In <em>Proceedings of VL/HCC 2019: IEEE Symposium on Visual Languages and Human-Centric Computing</em>. VL/HCC ’19. Memphis, TN, USA.</p>

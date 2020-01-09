@@ -49,13 +49,13 @@ Oord et al. 2016) and have interfaces in R (Edmondson 2019; Muschelli
 can be rendered using any of these services through the
 \CRANpkg{text2speech} package (Muschelli 2019b). The default is
 \href{https://aws.amazon.com/polly/}{Amazon Polly}, which has
-text-to-speech voice generation in over 21 languages, including a total
-of 29 dialects, implemented in the \CRANpkg{aws.polly} package (Leeper
-2017). In addition to multiple languages, the speech generation services
-provide voices with several pitches representing different genders
-within the same language. We present the \pkg{ari} package with
-reproducible use case examples and the video outputs with different
-voices in multiple languages.
+text-to-speech voice generation in over twenty one languages,
+implemented in the \CRANpkg{aws.polly} package (Leeper 2017). In
+addition to multiple languages, the speech generation services provide
+voices with several pitches representing different genders within the
+same language. We present the \pkg{ari} package with reproducible use
+case examples and the video outputs with different voices in multiple
+languages.
 
 The \pkg{ari} package relies on the \CRANpkg{tuneR} package for
 splitting and combining audio files appropriately so that lecture
@@ -419,23 +419,33 @@ output. The \texttt{pptx\_to\_ari} function combines the above steps:
 \begin{Sinput}
 doc = ariExtra::pptx_to_ari(pptx)
 \end{Sinput}
-\begin{Soutput}
-Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpo6aD9u/filede6236136195.png... done!
-Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpo6aD9u/filede62326b98ef.png... done!
-\end{Soutput}
+\end{Schunk}
+
+\begin{verbatim}
+Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+/Rtmpo6aD9u/filede6236136195.png... done!
+Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+/Rtmpo6aD9u/filede62326b98ef.png... done!
+\end{verbatim}
+
+\begin{Schunk}
 \begin{Sinput}
 doc[c("images", "script")]
 \end{Sinput}
-\begin{Soutput}
-$images
-[1] "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpo6aD9u/filede6236058cc5_files/slide_1.png"
-[2] "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/Rtmpo6aD9u/filede6236058cc5_files/slide_2.png"
-
-$script
-[1] "Sometimes it’s hard for an instructor to take the time to record their lectures.  For example, I’m in a coffee shop and it may be loud."
-[2] "Here is an example of a plot with really small axes.  We plot the x versus the y-variables and a smoother between them."                
-\end{Soutput}
 \end{Schunk}
+
+\begin{verbatim}
+$images
+[1] "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+Rtmpo6aD9u/filede6236058cc5_files/slide_1.png"
+[2] "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+Rtmpo6aD9u/filede6236058cc5_files/slide_2.png"
+$script
+[1] "Sometimes it’s hard for an instructor to take the time to record their lectures. 
+For example, I’m in a coffee shop and it may be loud."
+[2] "Here is an example of a plot with really small axes. We plot the x versus the 
+y-variables and a smoother between them."
+\end{verbatim}
 
 which can be passed to \texttt{ari\_spin}.
 
@@ -478,8 +488,8 @@ is turned on), where we can pass the Google identifier:
 gs_doc = ariExtra::gs_to_ari("14gd2DiOCVKRNpFfLrryrGG7D3S8pu9aZ")
 \end{Sinput}
 \begin{Soutput}
-Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpo6aD9u/filede6219fd5f9f.png... done!
-Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//Rtmpo6aD9u/filede624990cd0d.png... done!
+Converting page 1 to /tmp/RtmpSXnr9P/file2271172056df.png... done!
+Converting page 2 to /tmp/RtmpSXnr9P/file2271a3bc354.png... done!
 \end{Soutput}
 \end{Schunk}
 
@@ -582,6 +592,9 @@ packages to create videos using \pkg{ari}. This Docker image ensures
 that our workflow is completely reproducible, and it also enables
 deployment to multiple disk images for creating lecture videos at scale.
 
+\hypertarget{bibliography}{%
+\subsection{Bibliography}\label{bibliography}}
+
 \bibliography{RJreferences}
 
 \hypertarget{refs}{}
@@ -616,12 +629,14 @@ PowerPoint Documents}. \url{https://CRAN.R-project.org/package=officer}.
 
 \leavevmode\hypertarget{ref-hartsell2006video}{}%
 Hartsell, Taralynn, and Steve Chi-Yin Yuen. 2006. ``Video Streaming in
-Online Learning.'' \emph{AACE Journal} 14 (1): 31--43.
+Online Learning.'' \emph{AACE Journal} 14 (1). Association for the
+Advancement of Computing in Education (AACE): 31--43.
 
 \leavevmode\hypertarget{ref-hsin2013short}{}%
 Hsin, Wen-Jung, and John Cigas. 2013. ``Short Videos Improve Student
 Learning in Online Education.'' \emph{Journal of Computing Sciences in
-Colleges} 28 (5): 253--59.
+Colleges} 28 (5). Consortium for Computing Sciences in Colleges:
+253--59.
 
 \leavevmode\hypertarget{ref-Kross-2019}{}%
 Kross, Sean, and Philip J. Guo. 2019. ``End-User Programmers Repurposing

@@ -28,6 +28,23 @@ output:
 bibliography: "RJreferences.bib"
 ---
 
+```{r wrap-hook, echo=FALSE}
+# Taken from https://github.com/yihui/knitr-examples/blob/master/077-wrap-output.Rmd
+
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+```
+
 ## Introduction
 
 Videos are a crucial way people learn and they are pervasive in online education platforms [@hsin2013short; @hartsell2006video]. Producing educational videos with a lecturer speaking over slides takes time, energy, and usually video editing skills. Maintaining the accuracy
@@ -59,16 +76,16 @@ library(text2speech)
 library(ari)
 library("knitcitations")
 cleanbib()
-doc = xml2::read_html("https://docs.aws.amazon.com/polly/latest/dg/voicelist.html")
-tab = doc %>% 
-  html_table()
-tab = tab[[2]]
-dialects = unique(tab$Language)
-languages = sub(", .*", "", dialects)
-languages = sub(" .*", "", languages)
-languages = languages %>% 
-  trimws %>% 
-  unique()
+# doc = xml2::read_html("https://docs.aws.amazon.com/polly/latest/dg/voicelist.html")
+# tab = doc %>% 
+#   html_table()
+# tab = tab[[2]]
+# dialects = unique(tab$Language)
+# languages = sub(", .*", "", dialects)
+# languages = sub(" .*", "", languages)
+# languages = languages %>% 
+#   trimws %>% 
+#   unique()
 
 str_break = function(x, width = 80L) {
   n = nchar(x)
@@ -92,7 +109,7 @@ if (fdk_enabled) {
 In its simplest form a lecture video is comprised of visual content (e.g. slides and figures) and a spoken explanation of the visual content. Instead of a human lecturer, the \pkg{ari} package uses a text-to-speech system to synthesize spoken audio for a lecture. Modern text-to-speech systems that take advantage of recent
 advancements in artificial intelligence research are available from [Google](https://cloud.google.com/text-to-speech/), [Microsoft](https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/), and [Amazon](https://aws.amazon.com/polly/).  Many of these synthesizers
 make use of deep learning methods, such as WaveNet [@van2016wavenet] and have interfaces in R [@googleLanguageR; @mscstts; @aws.polly].  Currently in \pkg{ari}, synthesis of the the audio can be rendered using any of these services through the \CRANpkg{text2speech} package [@text2speech].  The default is
-[Amazon Polly](https://aws.amazon.com/polly/), which has text-to-speech voice generation in over `r length(languages)` languages, including a total of `r length(dialects)` dialects, implemented in the \CRANpkg{aws.polly} package
+[Amazon Polly](https://aws.amazon.com/polly/), which has text-to-speech voice generation in over twenty one languages, implemented in the \CRANpkg{aws.polly} package
 [@aws.polly].  In addition to multiple languages, the speech generation services provide voices with several pitches representing different genders within the same
 language.  We present the \pkg{ari} package with reproducible use case examples and the video outputs with different voices in multiple languages.
 
@@ -412,10 +429,34 @@ cat(show_notes, sep = '\n\n')
 
 The \pkg{ariExtra} package also can combine these processes and take multiple input types (Google Slides, PDFs, PPTX) and harmonize the output.  The `pptx_to_ari` function combines the above steps:
 
-```{r pptx_to_ari, message=FALSE}
+```{r pptx_to_ari, message=FALSE, eval=FALSE}
 doc = ariExtra::pptx_to_ari(pptx)
+```
+
+```
+Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+/Rtmpo6aD9u/filede6236136195.png... done!
+Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+/Rtmpo6aD9u/filede62326b98ef.png... done!
+```
+
+```{r pptx_to_ari_2, message=FALSE, eval=FALSE}
 doc[c("images", "script")]
 ```
+
+```
+$images
+[1] "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+Rtmpo6aD9u/filede6236058cc5_files/slide_1.png"
+[2] "/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/
+Rtmpo6aD9u/filede6236058cc5_files/slide_2.png"
+$script
+[1] "Sometimes it’s hard for an instructor to take the time to record their lectures. 
+For example, I’m in a coffee shop and it may be loud."
+[2] "Here is an example of a plot with really small axes. We plot the x versus the 
+y-variables and a smoother between them."
+```
+
 which can be passed to `ari_spin`. 
 
 We can then render the video with the "Kimberly" voice.  We use the
@@ -452,7 +493,7 @@ For Google Slides, the slide deck can be downloaded as a PowerPoint and the
 previous steps can be used, however it can also be downloaded directly as 
 a PDF. We will use the same presentation, but uploaded to Google Slides. The \pkg{ariExtra} package has the function `gs_to_ari` to wrap this functionality (as long as link sharing is turned on), where we can pass the Google identifier:
 
-```{r gs_to_ari, message=FALSE}
+```{r gs_to_ari, message=FALSE, linewidth=80}
 gs_doc = ariExtra::gs_to_ari("14gd2DiOCVKRNpFfLrryrGG7D3S8pu9aZ")
 ```
 
@@ -533,6 +574,8 @@ deployment to multiple disk images for creating lecture videos at scale.
 ```{r, include = FALSE, eval = FALSE}
 # write.bibtex(file = "RJreferences.bib", append = TRUE)
 ```
+
+## Bibliography
 
 \bibliography{RJreferences}
 
