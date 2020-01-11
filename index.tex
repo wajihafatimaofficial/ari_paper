@@ -96,6 +96,20 @@ which contains helper functions extensions of \pkg{ari}.
 \end{figure}
 \end{Schunk}
 
+\hypertarget{configuring-ari}{%
+\subsection{Configuring Ari}\label{configuring-ari}}
+
+Ari relies on several software packages including FFmpeg, one of the
+most popular libraries for processing audio, video, and image files.
+Configuring FFmpeg can be challenging, therefore we have provided a
+Docker image so that Ari users can start producing videos quickly. A
+guide to getting started with Docker and using our Docker image is
+included with Ari as a vignette which can be accessed via
+\texttt{vignette("Simple-Ari-Configuration-with-Docker")}. Users who are
+interested in configuring Ari on their own may find the Dockerfile
+associated with the guide useful, and it is being actively developed at
+\url{https://github.com/seankross/ari-on-docker}.
+
 \hypertarget{making-videos-with-ari-ari_stitch}{%
 \subsection{\texorpdfstring{Making videos with \texttt{ari}:
 \texttt{ari\_stitch}}{Making videos with ari: ari\_stitch}}\label{making-videos-with-ari-ari_stitch}}
@@ -488,8 +502,8 @@ is turned on), where we can pass the Google identifier:
 gs_doc = ariExtra::gs_to_ari("14gd2DiOCVKRNpFfLrryrGG7D3S8pu9aZ")
 \end{Sinput}
 \begin{Soutput}
-Converting page 1 to /tmp/RtmpSXnr9P/file2271172056df.png... done!
-Converting page 2 to /tmp/RtmpSXnr9P/file2271a3bc354.png... done!
+Converting page 1 to /tmp/Rtmpu3DQSM/file1d634b862a77.png... done!
+Converting page 2 to /tmp/Rtmpu3DQSM/file1d636aba2d36.png... done!
 \end{Soutput}
 \end{Schunk}
 
@@ -584,13 +598,6 @@ videos in multiple languages. We hope to add functionality so that
 communities of learners with language expertise can easily suggest
 modifications to automatically translated videos, and tooling so
 suggestions can be incorporated quickly.
-
-The workflow we have specified requires many interlocking pieces of
-software, therefore we have created a Docker environment
-(\url{https://github.com/seankross/bologna}) which contains the required
-packages to create videos using \pkg{ari}. This Docker image ensures
-that our workflow is completely reproducible, and it also enables
-deployment to multiple disk images for creating lecture videos at scale.
 
 \hypertarget{bibliography}{%
 \subsection{Bibliography}\label{bibliography}}
